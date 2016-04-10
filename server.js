@@ -4,6 +4,13 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+// passport here
+
+require('./models/Notes');
+// connect to the collection keep
+mongoose.connect('mongodb://localhost/keep');
+
 
 var routes = require('./routes/index');
 var notes = require('./routes/notes');
