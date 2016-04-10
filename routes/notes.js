@@ -7,6 +7,10 @@ var Note = mongoose.model('Note');
  * create a note
  */
 router.post('/create', function (req, res, next) {
+    if (req.body.title == "" && req.body.body == "") {
+        res.json({ created: false, msg: "Please fill in fields" });
+        return;
+    }
 
     // create note from input fields
     var note = new Note(req.body);
@@ -18,7 +22,7 @@ router.post('/create', function (req, res, next) {
         if (err) {
             return next(err);
         }
-        res.json(note);
+        res.json({ created: true, note: note });
     })
 });
 
@@ -27,19 +31,21 @@ router.post('/create', function (req, res, next) {
 /*
  * update a note by id
  */
-router.get('/update/:id', function (req, res, next) {
+router.post('/update/:id', function (req, res, next) {
     var id = req.params.id;
-    var title = "neuer title";
-    var body = "neuer body";
+    var title = req.body.title;
+    var body = req.body.body;
     var timeedited = new Date().getTime();
-    
+
     req.newData = { title: title, body: body, timeedited: timeedited };
     // just updates the attributes of the document that are in the newData object
     Note.findOneAndUpdate({ _id: id }, req.newData, { upsert: false }, function (err, note) {
         if (err) {
             res.json({ updated: false, status: 500, error: err });
+            return;
         } else {
             res.json({ updated: true, note: note });
+            return;
         }
     });
 });
@@ -50,15 +56,17 @@ router.get('/update/:id', function (req, res, next) {
 /*
  * delete a note by id
  */
-router.get('/delete/:id', function (req, res, next) {
+router.delete('/delete/:id', function (req, res, next) {
     var id = req.params.id; // id given in url is saved in req.params
     
     Note.remove({ _id: id }, function (err) {
         if (!err) {
             res.json({ deleted: true });
+            return;
         }
         else {
             res.json({ deleted: false, error: err });
+            return;
         }
     });
 });
@@ -74,6 +82,7 @@ router.get('/', function (req, res, next) {
             return next(err);
         }
         res.json(notes);
+        return;
     });
 });
 
@@ -90,10 +99,13 @@ router.get('/:id', function (req, res, next) {
         // sent note if found, else send void object {}
         if (err) {
             res.json({});
+            return;
         } else if (!note) {
             res.json({});
+            return;
         } else {
             res.json(note);
+            return;
         }
     })
 });

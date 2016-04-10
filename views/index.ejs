@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Notes</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= user.name %>'s Notes</h1>
-    <p>The place for all your notes</p>
-     <hr>
-    
-    
-    <% for(var i = 0; i<notes.length;i++){ %>
-    <div>
-        <p><%= notes[i].title%></p>
-        <p><%= notes[i].body%></p>
-        <p><%= notes[i].timecreated%></p>
-        <p><%= notes[i].id%></p>
-        
+
+<head>
+    <title>
+        <%= user.name %>'s Notes</title>
+        <%- include('templates/head'); %>
+</head>
+
+<body>
+    <div class="container">
+        <h3><%= user.name %>'s Notes</h3>
+        <% for(var i = 0; i<notes.length;i++){ %>
+            <div class="card <%= notes[i].color%>">
+                <h4>
+                    <%= notes[i].title%>
+                </h4>
+                <p>
+                    <%= notes[i].body%>
+                </p>
+                <p>
+                    <%= notes[i].timecreated%>
+                </p>
+                <p>
+                    <%= notes[i].id%>
+                </p>
+                <a class="button updatebtn" href="edit/<%= notes[i].id%>">update</a>
+                <a class="button deletebtn" data-id="<%= notes[i].id%>">delete</a>
+            </div>
+            <% } %>
+
+                <div class="u-cf"></div>
+                <a class="addbtn" href="/create">+</a>
+
     </div>
-     <hr>
-    
-    
-    <% } %>
-    
-    
-    
-   
-    <form action="notes/create" method="POST">
-        <p>Create a new note</p>
-        <input name="title" type="text" placeholder="Title">
-        <textarea name="body" placeholder="Note"></textarea>
-        <input type="submit" value="Create">
-    </form>
-  </body>
+</body>
+
 </html>

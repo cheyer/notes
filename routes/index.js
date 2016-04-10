@@ -12,7 +12,32 @@ router.get('/', function (req, res, next) {
         }
         res.render('index', { user: { name: 'Chris' }, notes: notes });
     });
+});
 
+router.get('/create', function (req, res, next) {
+    res.render('create', { user: { name: 'Chris' } });
+});
+
+// todo: auf jeden fall note find by id auslagern!!!
+router.get('/edit/:id', function (req, res, next) {
+
+    var id = req.params.id;
+
+    var query = Note.findById(id);
+    query.exec(function (err, note) {
+        // sent note if found, else send void object {}
+        if (err) {
+            res.json({});
+            return;
+        } else if (!note) {
+            res.json({});
+            return;
+        } else {
+            //console.log(note);
+            res.render('edit', { user: { name: 'Chris' }, note: note });
+            return;
+        }
+    });
 
 });
 

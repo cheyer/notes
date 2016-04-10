@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= user.name %>'s Notes</title>
+    <%- include('templates/head'); %>
+</head>
+
+<body class="white">
+    <div class="editor">
+        <input name="title" id="editorTitle" type="text" placeholder="Title" autocomplete="off" autofocus>
+        <textarea name="body" id="editorBody" placeholder="Your note..." autocomplete="off"></textarea>
+    </div>
+    <div class="control">
+        <span id="message"></span>
+        <a class="ghostbtn" href="#" id="savebtn">Save</a>
+    </div>
+</body>
+
+</html>
